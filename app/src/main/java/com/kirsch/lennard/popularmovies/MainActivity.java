@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void fillGridView(){
         GridView gridView = (GridView) findViewById(R.id.gridview);
-        gridView.setAdapter(new ImageAdapter(this));
+        gridView.setAdapter(new MovieAdapter(this));
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
