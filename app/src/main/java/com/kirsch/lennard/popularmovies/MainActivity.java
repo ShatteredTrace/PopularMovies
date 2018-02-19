@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String INTENT_MOVIE_OBJECT_KEY = "movieObject";
 
 
 
@@ -22,22 +23,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         new MovieDBQueryTask().execute();
-
-        //    Picasso.with(context).load("http://i.imgur.com/DvpvklR.png").into(imageView);
     }
 
-    private void lauchDetailActivity(int position){
-        Intent intent = new Intent();
+    private void lauchDetailActivity(Movie movie){
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(INTENT_MOVIE_OBJECT_KEY, movie );
+        startActivity(intent);
     }
 
-    private void fillGridView(Movie[] movies){
+    private void fillGridView(final Movie[] movies){
         GridView gridView = (GridView) findViewById(R.id.gridview);
         gridView.setAdapter(new MovieAdapter(this, movies));
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+                lauchDetailActivity(movies[position]);
             }
         });
     }
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
 /*
     Requirements
-    TODO #0 - Movies are displayed in the main layout via a grid of their corresponding movie poster thumbnails.
+    COMPLETED #0 - Movies are displayed in the main layout via a grid of their corresponding movie poster thumbnails.
 
     TODO #1 - UI contains an element (i.e a spinner or settings menu) to toggle the sort order of the movies by: most popular, highest rated.
 

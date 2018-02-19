@@ -1,6 +1,8 @@
 package com.kirsch.lennard.popularmovies;
 
-public class Movie {
+import java.io.Serializable;
+
+public class Movie implements Serializable{
     private String poster_path;
     private boolean adult;
     private String overview;
