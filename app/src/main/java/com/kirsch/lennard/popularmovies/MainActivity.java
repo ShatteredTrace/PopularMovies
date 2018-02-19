@@ -1,6 +1,7 @@
 package com.kirsch.lennard.popularmovies;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,15 +9,21 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.net.URL;
+
 public class MainActivity extends AppCompatActivity {
 
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    //    Picasso.with(context).load("http://i.imgur.com/DvpvklR.png").into(imageView);
+
+        new MovieDBQueryTask().execute();
+
+        //    Picasso.with(context).load("http://i.imgur.com/DvpvklR.png").into(imageView);
     }
 
     private void lauchDetailActivity(int position){
@@ -33,6 +40,29 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public class MovieDBQueryTask extends AsyncTask<URL, Void, String> {
+
+        @Override
+        protected String doInBackground(URL... urls) {
+            String results = null;
+
+            try{
+                results = NetworkUtils.getMovieData(NetworkUtils.buildUrl());
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+            return results;
+        }
+
+        @Override
+        protected void onPostExecute(String results) {
+            if(results != null && !results.equals("")){
+            } else{
+                //error
+            }
+        }
     }
 }
 
