@@ -10,11 +10,13 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Picasso.with(context).load("http://i.imgur.com/DvpvklR.png").into(imageView);
+    //    Picasso.with(context).load("http://i.imgur.com/DvpvklR.png").into(imageView);
     }
 
     private void lauchDetailActivity(int position){
