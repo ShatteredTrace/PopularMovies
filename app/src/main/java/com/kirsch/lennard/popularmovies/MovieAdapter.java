@@ -7,16 +7,20 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
 public class MovieAdapter extends BaseAdapter{
     private Context mContext;
+    private Movie[] movies;
 
-    public MovieAdapter(Context c){
+    public MovieAdapter(Context c, Movie[] movies){
         mContext = c;
+        this.movies = movies;
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return movies.length;
     }
 
     @Override
@@ -30,7 +34,17 @@ public class MovieAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        return null;
+    public View getView(int position, View view, ViewGroup viewGroup) {
+        ImageView imageView;
+        if (view == null) {
+            // if it's not recycled, initialize some attributes
+            imageView = new ImageView(mContext);
+          //  imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
+           // imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        } else {
+            imageView = (ImageView) view;
+        }
+        Picasso.with(mContext).load(NetworkUtils.MOVIEDB_POSTER_BASE_URL + NetworkUtils.POSTER_SIZE_W185_URL + movies[position].getPoster_path()).into(imageView);
+        return imageView;
     }
 }

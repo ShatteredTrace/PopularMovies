@@ -30,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent();
     }
 
-    private void fillGridView(){
+    private void fillGridView(Movie[] movies){
         GridView gridView = (GridView) findViewById(R.id.gridview);
-        gridView.setAdapter(new MovieAdapter(this));
+        gridView.setAdapter(new MovieAdapter(this, movies));
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -59,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String results) {
             if(results != null && !results.equals("")){
+                Movie[] movies = NetworkUtils.getAllMovies(results);
+                fillGridView(movies);
             } else{
                 //error
             }

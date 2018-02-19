@@ -1,6 +1,7 @@
 package com.kirsch.lennard.popularmovies;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +17,8 @@ import java.util.Scanner;
 public class NetworkUtils {
     public static final String MOVIEDB_BASE_URL = "http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=";
     public static final String APIKey = "";
+    public static final String MOVIEDB_POSTER_BASE_URL = "http://image.tmdb.org/t/p/";
+    public static final String POSTER_SIZE_W185_URL = "w500/";
 
     public static final String JSON_RESULTS_KEY = "results";
     public static final String JSON_POSTER_PATH_KEY = "poster_path";
@@ -99,5 +102,24 @@ public class NetworkUtils {
         }
 
         return url;
+    }
+
+    public static Movie[] getAllMovies(String json){
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            JSONArray results = jsonObject.getJSONArray(JSON_RESULTS_KEY);
+
+            Movie[] movies = new Movie[results.length()];
+
+            for (int i = 0; i < results.length(); i++){
+                movies[i] = getMovieFromJSON(json, i);
+            }
+            return movies;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }
