@@ -2,11 +2,16 @@ package com.kirsch.lennard.popularmovies;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -14,6 +19,7 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
     public static final String INTENT_MOVIE_OBJECT_KEY = "movieObject";
+    private boolean sortByPopularity = true;
 
 
 
@@ -50,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             String results = null;
 
             try{
-                results = NetworkUtils.getMovieData(NetworkUtils.buildUrl());
+                results = NetworkUtils.getMovieData(NetworkUtils.buildUrl(sortByPopularity));
             } catch (IOException e){
                 e.printStackTrace();
             }
@@ -66,6 +72,32 @@ public class MainActivity extends AppCompatActivity {
                 //error
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.settings_main_sort_popularity){
+            if (!sortByPopularity){
+                sortByPopularity = true;
+                new MovieDBQueryTask().execute();
+            }
+
+        } else if( id == R.id.settings_main_sort_vote){
+            if(sortByPopularity){
+                sortByPopularity = false;
+                new MovieDBQueryTask().execute();
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 

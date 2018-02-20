@@ -1,7 +1,6 @@
 package com.kirsch.lennard.popularmovies;
 
 import android.net.Uri;
-import android.os.AsyncTask;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,13 +8,15 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
 public class NetworkUtils {
-    public static final String MOVIEDB_BASE_URL = "http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=";
+    public static final String MOVIEDB_BASE_POPULARITY_URL = "http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=";
+    public static final String MOVIEDB_BASE_AVERAGE_VOTE_URL = "http://api.themoviedb.org/3/discover/movie?sort_by=vote_average.desc&api_key=";
     public static final String APIKey = "";
     public static final String MOVIEDB_POSTER_BASE_URL = "http://image.tmdb.org/t/p/";
     public static final String POSTER_SIZE_W185_URL = "w500/";
@@ -61,7 +62,7 @@ public class NetworkUtils {
                 int popularity = (int) movieJSON.optInt(JSON_POPULARITY_KEY);
                 int vote_count = movieJSON.optInt(JSON_VOTE_COUNT_KEY);
                 boolean video = movieJSON.optBoolean(JSON_VIDEO_KEY);
-                int vote_average = (int) movieJSON.optInt(JSON_VOTE_AVERAGE_KEY);
+                float vote_average = BigDecimal.valueOf(movieJSON.optDouble(JSON_VOTE_AVERAGE_KEY)).floatValue();
 
                 return new Movie(poster_path, adult, overview, release_date, genre_ids, id, original_title, original_language
                 , title, backdrop_path, popularity, vote_count, video, vote_average);
@@ -91,12 +92,14 @@ public class NetworkUtils {
         }
     }
 
-    public static URL buildUrl(){
-        Uri builtUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon().appendPath(APIKey).build();
+    public static URL buildUrl(boolean sortByPopularity){
         URL url = null;
         try {
-            //url = new URL(builtUri.toString());
-            url = new URL(MOVIEDB_BASE_URL + APIKey);
+            if(sortByPopularity) {
+                url = new URL(MOVIEDB_BASE_POPULARITY_URL + APIKey);
+            } else {
+                url = new URL(MOVIEDB_BASE_AVERAGE_VOTE_URL + APIKey);
+            }
         } catch (MalformedURLException e){
             e.printStackTrace();
         }

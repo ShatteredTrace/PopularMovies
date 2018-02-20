@@ -16,13 +16,13 @@ public class Movie implements Serializable{
     private int popularity;
     private int vote_count;
     private boolean video;
-    private int vote_average;
+    private float vote_average;
 
     public Movie(){
 
     }
 
-    public Movie(String poster_path, boolean adult, String overview, String release_date, int[] genre_ids, int id, String original_title, String original_language, String title, String backdrop_path, int popularity, int vote_count, boolean video, int vote_average) {
+    public Movie(String poster_path, boolean adult, String overview, String release_date, int[] genre_ids, int id, String original_title, String original_language, String title, String backdrop_path, int popularity, int vote_count, boolean video, float vote_average) {
         this.poster_path = poster_path;
         this.adult = adult;
         this.overview = overview;
@@ -143,11 +143,11 @@ public class Movie implements Serializable{
         this.video = video;
     }
 
-    public int getVote_average() {
+    public float getVote_average() {
         return vote_average;
     }
 
-    public void setVote_average(int vote_average) {
+    public void setVote_average(float vote_average) {
         this.vote_average = vote_average;
     }
 }
