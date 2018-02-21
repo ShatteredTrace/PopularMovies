@@ -1,7 +1,5 @@
 package com.kirsch.lennard.popularmovies;
 
-import android.net.Uri;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,6 +35,13 @@ public class NetworkUtils {
     public static final String JSON_VIDEO_KEY = "video";
     public static final String JSON_VOTE_AVERAGE_KEY = "vote_average";
 
+    /**
+     * This method created a Movie Object and fills it with Data from
+     * the given JSON String
+     * @param json the JSON String retrieved from themovieDB
+     * @param index the index of the movie to retrieve from the JSON Data
+     * @return A Movie Object filled with the retrieved Data
+     */
     public static Movie getMovieFromJSON(String json, int index){
             try {
                 JSONObject jsonObject = new JSONObject(json);
@@ -73,6 +78,12 @@ public class NetworkUtils {
             return null;
     }
 
+    /**
+     * This Method connects to the given URL and retrieves the Data
+     * @param url The url from which to retrive Data
+     * @return A String of the Movie Data retrieved from theMovieDB
+     * @throws IOException required
+     */
     public static String getMovieData(URL url) throws IOException{
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
@@ -92,6 +103,12 @@ public class NetworkUtils {
         }
     }
 
+    /**
+     * This method builds the URL from which to retrieve data
+     * @param sortByPopularity weather or not to sort by popularity. If the Value is false,
+     *                         it will be sorted by average vote.
+     * @return the bult URL
+     */
     public static URL buildUrl(boolean sortByPopularity){
         URL url = null;
         try {
@@ -107,6 +124,11 @@ public class NetworkUtils {
         return url;
     }
 
+    /**
+     * This method gets all Movie Objects from a given JSON String
+     * @param json The JSON String containing Data for Movies from themovieDB
+     * @return An array of Movie Objects, filled with Data
+     */
     public static Movie[] getAllMovies(String json){
         try {
             JSONObject jsonObject = new JSONObject(json);
