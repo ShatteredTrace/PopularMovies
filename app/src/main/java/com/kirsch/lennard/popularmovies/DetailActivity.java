@@ -23,13 +23,6 @@ public class DetailActivity extends AppCompatActivity {
         setUpUI(movie);
     }
 
-<<<<<<< HEAD
-    /*
-    This method is used to fill the
-     */
-=======
-
->>>>>>> parent of 8cd3a96... Cleanup 1.0
     private void setUpUI(Movie movie){
         ImageView moviePoster = (ImageView) findViewById(R.id.movie_Poster);
         TextView movieTitle = (TextView) findViewById(R.id.movie_Title);
