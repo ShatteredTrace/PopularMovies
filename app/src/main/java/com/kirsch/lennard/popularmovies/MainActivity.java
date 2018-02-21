@@ -31,12 +31,20 @@ public class MainActivity extends AppCompatActivity {
         new MovieDBQueryTask().execute();
     }
 
+    /**
+    This method launches the DetailActivity which displays details about a Movie
+    @param movie the Movie to display in Detail
+     */
     private void lauchDetailActivity(Movie movie){
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(INTENT_MOVIE_OBJECT_KEY, movie );
         startActivity(intent);
     }
 
+    /**
+     * This method fills the Gridview of the Main Screen with movie-posters
+     * @param movies the Array of movies whose Posters to display
+     */
     private void fillGridView(final Movie[] movies){
         GridView gridView = (GridView) findViewById(R.id.gridview);
         gridView.setAdapter(new MovieAdapter(this, movies));
