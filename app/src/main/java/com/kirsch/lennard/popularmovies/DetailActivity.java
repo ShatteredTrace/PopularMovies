@@ -23,6 +23,10 @@ public class DetailActivity extends AppCompatActivity {
         setUpUI(movie);
     }
 
+    /**
+     * This method fills the Views with the details of a Movie
+     * @param movie the Movie whose Details to display
+     */
     private void setUpUI(Movie movie){
         ImageView moviePoster = (ImageView) findViewById(R.id.movie_Poster);
         TextView movieTitle = (TextView) findViewById(R.id.movie_Title);
@@ -38,6 +42,11 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *  This method changes the Date to a structure better suited for presentation
+     * @param releaseDate a String of the Date in the Format retrieved from themovieDB (yyyy-mm-dd)
+     * @return the Data as a pretty printed String
+     */
     private String restructureReleaseDate(String releaseDate){
         String newDate = "";
         String[] split = releaseDate.split("-");

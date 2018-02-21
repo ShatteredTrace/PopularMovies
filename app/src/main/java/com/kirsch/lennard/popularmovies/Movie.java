@@ -2,6 +2,9 @@ package com.kirsch.lennard.popularmovies;
 
 import java.io.Serializable;
 
+/*
+This class represents a single Movie with all relevant Data
+ */
 public class Movie implements Serializable{
     private String poster_path;
     private boolean adult;
