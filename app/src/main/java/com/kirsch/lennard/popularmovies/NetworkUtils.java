@@ -13,8 +13,8 @@ import java.net.URL;
 import java.util.Scanner;
 
 public class NetworkUtils {
-    public static final String MOVIEDB_BASE_POPULARITY_URL = "http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=";
-    public static final String MOVIEDB_BASE_AVERAGE_VOTE_URL = "http://api.themoviedb.org/3/discover/movie?sort_by=vote_average.desc&api_key=";
+    public static final String MOVIEDB_BASE_POPULARITY_URL = "http://api.themoviedb.org/3/movie/popular?api_key=";
+    public static final String MOVIEDB_BASE_AVERAGE_VOTE_URL = "http://api.themoviedb.org/3/movie/top_rated?api_key=";
     public static final String APIKey = "";
     public static final String MOVIEDB_POSTER_BASE_URL = "http://image.tmdb.org/t/p/";
     public static final String POSTER_SIZE_W185_URL = "w500/";

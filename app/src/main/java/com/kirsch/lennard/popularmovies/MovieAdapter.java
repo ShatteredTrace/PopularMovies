@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
@@ -44,7 +43,7 @@ public class MovieAdapter extends BaseAdapter{
         } else {
             imageView = (ImageView) view;
         }
-        Picasso.with(mContext).load(NetworkUtils.MOVIEDB_POSTER_BASE_URL + NetworkUtils.POSTER_SIZE_W185_URL + movies[position].getPoster_path()).into(imageView);
+        Picasso.with(mContext).load(NetworkUtils.MOVIEDB_POSTER_BASE_URL + NetworkUtils.POSTER_SIZE_W185_URL + movies[position].getPosterPath()).placeholder(R.drawable.placeholder).error(R.drawable.placeholder).into(imageView);
         return imageView;
     }
 }

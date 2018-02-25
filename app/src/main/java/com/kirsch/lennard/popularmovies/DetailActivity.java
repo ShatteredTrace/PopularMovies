@@ -19,7 +19,8 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         Intent intent = getIntent();
-        Movie movie = (Movie) intent.getSerializableExtra(MainActivity.INTENT_MOVIE_OBJECT_KEY);
+       // Movie movie = (Movie) intent.getSerializableExtra(MainActivity.INTENT_MOVIE_OBJECT_KEY);
+        Movie movie = intent.getExtras().getParcelable(MainActivity.INTENT_MOVIE_OBJECT_KEY);
         setUpUI(movie);
     }
 
@@ -28,17 +29,17 @@ public class DetailActivity extends AppCompatActivity {
      * @param movie the Movie whose Details to display
      */
     private void setUpUI(Movie movie){
-        ImageView moviePoster = (ImageView) findViewById(R.id.movie_Poster);
-        TextView movieTitle = (TextView) findViewById(R.id.movie_Title);
-        TextView movieReleaseDateValue = (TextView) findViewById(R.id.movie_Release_Date_Value);
-        TextView moviePlotSynopsis = (TextView) findViewById(R.id.movie_Plot_Synopsis);
-        RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+        ImageView moviePoster = findViewById(R.id.movie_Poster);
+        TextView movieTitle = findViewById(R.id.movie_Title);
+        TextView movieReleaseDateValue = findViewById(R.id.movie_Release_Date_Value);
+        TextView moviePlotSynopsis = findViewById(R.id.movie_Plot_Synopsis);
+        RatingBar ratingBar = findViewById(R.id.ratingBar);
 
-        Picasso.with(this).load(NetworkUtils.MOVIEDB_POSTER_BASE_URL + NetworkUtils.POSTER_SIZE_W185_URL + movie.getPoster_path()).into(moviePoster);
+        Picasso.with(this).load(NetworkUtils.MOVIEDB_POSTER_BASE_URL + NetworkUtils.POSTER_SIZE_W185_URL + movie.getPosterPath()).into(moviePoster);
         movieTitle.setText(movie.getTitle());
-        movieReleaseDateValue.setText(restructureReleaseDate(movie.getRelease_date()));
+        movieReleaseDateValue.setText(restructureReleaseDate(movie.getReleaseDate()));
         moviePlotSynopsis.setText(movie.getOverview());
-        ratingBar.setRating(movie.getVote_average() / 2);
+        ratingBar.setRating(movie.getVoteAverage() / 2);
 
     }
 

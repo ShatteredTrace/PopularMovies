@@ -112,21 +112,26 @@ public class MainActivity extends AppCompatActivity {
 
 /*
     Requirements
-    COMPLETED #0 - Movies are displayed in the main layout via a grid of their corresponding movie poster thumbnails.
+    COMPLETED #0 - Movies are displayed in the main layout via a grid of their corresponding movie
+    poster thumbnails.
 
-    COMPLETED #1 - UI contains an element (i.e a spinner or settings menu) to toggle the sort order of the movies by: most popular, highest rated.
+    COMPLETED #1 - UI contains an element (i.e a spinner or settings menu) to toggle the sort order
+    of the movies by: most popular, highest rated.
 
     COMPLETED #2 - UI contains a screen for displaying the details for a selected movie.
 
-    COMPLETED #3 - Movie details layout contains title, release date, movie poster, vote average, and plot synopsis.
+    COMPLETED #3 - Movie details layout contains title, release date, movie poster, vote average,
+    and plot synopsis.
 
     User Interface - Function
-    COMPLETED #4 - When a user changes the sort criteria (“most popular and highest rated”) the main view gets updated correctly.
+    COMPLETED #4 - When a user changes the sort criteria (“most popular and highest rated”) the
+    main view gets updated correctly.
 
     COMPLETED #5 - When a movie poster thumbnail is selected, the movie details screen is launched.
 
     Network API Implementation
-    COMPLETED #6 - In a background thread, app queries the /movie/popular or /movie/top_rated API for the sort criteria specified in the settings menu.
+    COMPLETED #6 - In a background thread, app queries the /movie/popular or /movie/top_rated API
+    for the sort criteria specified in the settings menu.
 
 
     You app will:
