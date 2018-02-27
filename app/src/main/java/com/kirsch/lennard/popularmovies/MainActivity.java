@@ -76,8 +76,6 @@ public class MainActivity extends AppCompatActivity {
             if(results != null && !results.equals("")){
                 Movie[] movies = NetworkUtils.getAllMovies(results);
                 fillGridView(movies);
-            } else{
-                //error
             }
         }
     }

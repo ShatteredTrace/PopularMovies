@@ -36,10 +36,7 @@ public class MovieAdapter extends BaseAdapter{
     public View getView(int position, View view, ViewGroup viewGroup) {
         ImageView imageView;
         if (view == null) {
-            // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
-          //  imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
-           // imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         } else {
             imageView = (ImageView) view;
         }

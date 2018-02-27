@@ -3,7 +3,7 @@ package com.kirsch.lennard.popularmovies;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/*
+/**
 This class represents a single Movie with all relevant Data
  */
 public class Movie implements Parcelable{
@@ -45,7 +45,7 @@ public class Movie implements Parcelable{
         return 0;
     }
 
-    static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>(){
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>(){
 
         public Movie createFromParcel(Parcel in){
             return new Movie(in);
