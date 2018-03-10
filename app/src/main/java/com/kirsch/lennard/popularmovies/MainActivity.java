@@ -57,23 +57,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public class MovieDBQueryTask extends AsyncTask<URL, Void, String> {
-
+    public class MovieDBQueryTaskListener implements AsyncTaskInterface<String> {
         @Override
-        protected String doInBackground(URL... urls) {
-            String results = null;
-
-            try{
-                results = NetworkUtils.getMovieData(NetworkUtils.buildUrl(sortByPopularity));
-            } catch (IOException e){
-                e.printStackTrace();
-            }
-            return results;
-        }
-
-        @Override
-        protected void onPostExecute(String results) {
-            if(results != null && !results.equals("")){
+        public void onTaskComplete(String results) {
+            if (results != null && !results.equals("")) {
                 Movie[] movies = NetworkUtils.getAllMovies(results);
                 fillGridView(movies);
             }
@@ -108,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void queryMovieDB(){
         if(NetworkUtils.isConnectedToInternet(this)){
-            new MovieDBQueryTask().execute();
+            new MovieDBQueryTask(this, sortByPopularity, new MovieDBQueryTaskListener()).execute();
         }
         else{
             //TODO What to do in case of no network connection
