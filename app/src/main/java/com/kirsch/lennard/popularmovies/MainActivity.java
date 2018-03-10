@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new MovieDBQueryTask().execute();
+        queryMovieDB();
     }
 
     /**
@@ -94,16 +94,25 @@ public class MainActivity extends AppCompatActivity {
         if(id == R.id.settings_main_sort_popularity){
             if (!sortByPopularity){
                 sortByPopularity = true;
-                new MovieDBQueryTask().execute();
+                queryMovieDB();
             }
 
         } else if( id == R.id.settings_main_sort_vote){
             if(sortByPopularity){
                 sortByPopularity = false;
-                new MovieDBQueryTask().execute();
+                queryMovieDB();
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void queryMovieDB(){
+        if(NetworkUtils.isConnectedToInternet(this)){
+            new MovieDBQueryTask().execute();
+        }
+        else{
+            //TODO What to do in case of no network connection
+        }
     }
 }
 
