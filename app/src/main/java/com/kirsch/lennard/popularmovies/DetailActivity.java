@@ -3,6 +3,7 @@ package com.kirsch.lennard.popularmovies;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -27,6 +28,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
+        //getActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         Movie movie = intent.getExtras().getParcelable(MainActivity.INTENT_MOVIE_OBJECT_KEY);
@@ -59,4 +61,5 @@ public class DetailActivity extends AppCompatActivity {
         newDate += " " + split[0];
         return newDate;
     }
+
 }
