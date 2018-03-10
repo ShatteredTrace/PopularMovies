@@ -3,6 +3,7 @@ package com.kirsch.lennard.popularmovies;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -11,15 +12,23 @@ import com.squareup.picasso.Picasso;
 
 import java.text.DateFormatSymbols;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class DetailActivity extends AppCompatActivity {
+    @BindView(R.id.movie_Poster) ImageView moviePoster;
+    @BindView(R.id.movie_Title) TextView movieTitle;
+    @BindView(R.id.movie_Release_Date_Value) TextView movieReleaseDateValue;
+    @BindView(R.id.movie_Plot_Synopsis) TextView moviePlotSynopsis;
+    @BindView(R.id.ratingBar) RatingBar ratingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        ButterKnife.bind(this);
 
         Intent intent = getIntent();
-       // Movie movie = (Movie) intent.getSerializableExtra(MainActivity.INTENT_MOVIE_OBJECT_KEY);
         Movie movie = intent.getExtras().getParcelable(MainActivity.INTENT_MOVIE_OBJECT_KEY);
         setUpUI(movie);
     }
@@ -29,11 +38,6 @@ public class DetailActivity extends AppCompatActivity {
      * @param movie the Movie whose Details to display
      */
     private void setUpUI(Movie movie){
-        ImageView moviePoster = findViewById(R.id.movie_Poster);
-        TextView movieTitle = findViewById(R.id.movie_Title);
-        TextView movieReleaseDateValue = findViewById(R.id.movie_Release_Date_Value);
-        TextView moviePlotSynopsis = findViewById(R.id.movie_Plot_Synopsis);
-        RatingBar ratingBar = findViewById(R.id.ratingBar);
 
         Picasso.with(this).load(NetworkUtils.MOVIEDB_POSTER_BASE_URL + NetworkUtils.POSTER_SIZE_W185_URL + movie.getPosterPath()).into(moviePoster);
         movieTitle.setText(movie.getTitle());
