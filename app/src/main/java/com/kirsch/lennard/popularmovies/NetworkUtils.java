@@ -42,6 +42,15 @@ public class NetworkUtils {
     public static final String JSON_VIDEO_KEY = "video";
     public static final String JSON_VOTE_AVERAGE_KEY = "vote_average";
 
+    public static final String JSON_VIDEO_ID_KEY = "id";
+    public static final String JSON_VIDEO_ISO_639_1_KEY = "iso_639_1";
+    public static final String JSON_VIDEO_ISO_3166_1_KEY = "iso_3166_1";
+    public static final String JSON_VIDEO_KEY_KEY = "key";
+    public static final String JSON_VIDEO_NAME_KEY = "name";
+    public static final String JSON_VIDEO_SITE_KEY = "site";
+    public static final String JSON_VIDEO_SIZE_KEY = "size";
+    public static final String JSON_VIDEO_TYPE_KEY = "type";
+
     /**
      * This method created a Movie Object and fills it with Data from
      * the given JSON String
@@ -83,6 +92,19 @@ public class NetworkUtils {
                 e.printStackTrace();
             }
             return null;
+    }
+
+    public static Video getVideoFromJSON(JSONObject videoJSON){
+        String id = videoJSON.optString(JSON_VIDEO_ID_KEY);
+        String iso_639_1 = videoJSON.optString(JSON_VIDEO_ISO_639_1_KEY);
+        String iso_3166_1 = videoJSON.optString(JSON_VIDEO_ISO_3166_1_KEY);
+        String key = videoJSON.optString(JSON_VIDEO_KEY_KEY);
+        String name = videoJSON.optString(JSON_VIDEO_NAME_KEY);
+        String site = videoJSON.optString(JSON_VIDEO_SITE_KEY);
+        int size = videoJSON.optInt(JSON_VIDEO_SIZE_KEY);
+        String type = videoJSON.optString(JSON_VIDEO_TYPE_KEY);
+
+        return new Video(id, iso_639_1, iso_3166_1, key, name, site, size, type);
     }
 
     /**
@@ -131,7 +153,7 @@ public class NetworkUtils {
         return url;
     }
 
-    public static URL buildVideosUrl(String movieID){
+    public static URL buildVideosUrl(int movieID){
         URL url = null;
         try {
             url = new URL(MOVIEDB_BASE_MOVIE_URL + movieID + MOVIEDB_BASE_VIDEOS_URL + APIKey);
@@ -141,7 +163,7 @@ public class NetworkUtils {
         return url;
     }
 
-    public static URL buildReviewsUrl(String movieID){
+    public static URL buildReviewsUrl(int movieID){
         URL url = null;
         try {
             url = new URL(MOVIEDB_BASE_MOVIE_URL + movieID + MOVIEDB_BASE_REVIEWS_URL + APIKey);
@@ -168,6 +190,24 @@ public class NetworkUtils {
             return movies;
 
         } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static Video[] getVideoData(String json){
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            JSONArray results = jsonObject.getJSONArray(JSON_RESULTS_KEY);
+
+            Video[] videos = new Video[results.length()];
+
+            for(int i = 0; i < results.length(); i++){
+                videos[i] = getVideoFromJSON(results.getJSONObject(i));
+            }
+
+        } catch (JSONException e){
             e.printStackTrace();
         }
 

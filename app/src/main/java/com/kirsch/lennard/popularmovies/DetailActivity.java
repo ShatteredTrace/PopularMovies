@@ -1,5 +1,6 @@
 package com.kirsch.lennard.popularmovies;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,9 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Movie movie = intent.getExtras().getParcelable(MainActivity.INTENT_MOVIE_OBJECT_KEY);
+
+        queryExtraData(this, movie);
+
         setUpUI(movie);
     }
 
@@ -62,4 +66,21 @@ public class DetailActivity extends AppCompatActivity {
         return newDate;
     }
 
+    public void queryExtraData(Context context, Movie movie){
+        if(NetworkUtils.isConnectedToInternet(this)){
+            new MovieDBQueryVideosTask(this, movie.getId(), new MovieDBQueryVideosTaskListener()).execute();
+        }
+        else{
+            //TODO What to do in case of no network connection
+        }
+    }
+
+    public class MovieDBQueryVideosTaskListener implements AsyncTaskInterface<String> {
+        @Override
+        public void onTaskComplete(String results) {
+            if (results != null && !results.equals("")) {
+
+            }
+        }
+    }
 }

@@ -10,9 +10,9 @@ public class MovieDBQueryVideosTask extends AsyncTask<URL, Void, String> {
     private AsyncTaskInterface<String> listener;
 
     private Context context;
-    private String movieID;
+    private int movieID;
 
-    public MovieDBQueryVideosTask(Context context, String movieID, AsyncTaskInterface<String> listener){
+    public MovieDBQueryVideosTask(Context context, int movieID, AsyncTaskInterface<String> listener){
         this.context = context;
         this.listener = listener;
         this.movieID = movieID;
