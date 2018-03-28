@@ -19,6 +19,9 @@ import java.util.Scanner;
 public class NetworkUtils {
     public static final String MOVIEDB_BASE_POPULARITY_URL = "http://api.themoviedb.org/3/movie/popular?api_key=";
     public static final String MOVIEDB_BASE_AVERAGE_VOTE_URL = "http://api.themoviedb.org/3/movie/top_rated?api_key=";
+    public static final String MOVIEDB_BASE_MOVIE_URL = "http://api.themoviedb.org/movie/";
+    public static final String MOVIEDB_BASE_VIDEOS_URL = "/videos?api_key=";
+    public static final String MOVIEDB_BASE_REVIEWS_URL = "/reviews?api_key=";
     public static final String APIKey = BuildConfig.API_KEY;
     public static final String MOVIEDB_POSTER_BASE_URL = "http://image.tmdb.org/t/p/";
     public static final String POSTER_SIZE_W185_URL = "w500/";
@@ -85,10 +88,10 @@ public class NetworkUtils {
     /**
      * This Method connects to the given URL and retrieves the Data
      * @param url The url from which to retrive Data
-     * @return A String of the Movie Data retrieved from theMovieDB
+     * @return A String of the Data retrieved from theMovieDB
      * @throws IOException required
      */
-    public static String getMovieData(URL url) throws IOException{
+    public static String getMovieDBData(URL url) throws IOException{
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = urlConnection.getInputStream();
@@ -128,6 +131,25 @@ public class NetworkUtils {
         return url;
     }
 
+    public static URL buildVideosUrl(String movieID){
+        URL url = null;
+        try {
+            url = new URL(MOVIEDB_BASE_MOVIE_URL + movieID + MOVIEDB_BASE_VIDEOS_URL + APIKey);
+        }catch (MalformedURLException e){
+            e.printStackTrace();
+        }
+        return url;
+    }
+
+    public static URL buildReviewsUrl(String movieID){
+        URL url = null;
+        try {
+            url = new URL(MOVIEDB_BASE_MOVIE_URL + movieID + MOVIEDB_BASE_REVIEWS_URL + APIKey);
+        } catch (MalformedURLException e){
+            e.printStackTrace();
+        }
+        return url;
+    }
     /**
      * This method gets all Movie Objects from a given JSON String
      * @param json The JSON String containing Data for Movies from themovieDB
@@ -161,4 +183,6 @@ public class NetworkUtils {
 
         return isConnected;
     }
+
+
 }
