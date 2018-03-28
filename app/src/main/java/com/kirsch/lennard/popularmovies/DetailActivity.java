@@ -4,11 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.Button;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -24,12 +24,15 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.movie_Plot_Synopsis) TextView moviePlotSynopsis;
     @BindView(R.id.ratingBar) RatingBar ratingBar;
 
+    Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
-        //getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        context = this;
 
         Intent intent = getIntent();
         Movie movie = intent.getExtras().getParcelable(MainActivity.INTENT_MOVIE_OBJECT_KEY);
@@ -79,7 +82,9 @@ public class DetailActivity extends AppCompatActivity {
         @Override
         public void onTaskComplete(String results) {
             if (results != null && !results.equals("")) {
-
+                Video[] videos = NetworkUtils.getAllVideos(results);
+                Log.d("TAG", videos[0].getKey());
+                Toast.makeText(context,"KEY: " + videos[0].getKey(), Toast.LENGTH_SHORT).show();
             }
         }
     }

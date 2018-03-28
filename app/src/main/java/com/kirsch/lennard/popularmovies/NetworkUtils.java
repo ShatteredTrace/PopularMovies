@@ -19,7 +19,7 @@ import java.util.Scanner;
 public class NetworkUtils {
     public static final String MOVIEDB_BASE_POPULARITY_URL = "http://api.themoviedb.org/3/movie/popular?api_key=";
     public static final String MOVIEDB_BASE_AVERAGE_VOTE_URL = "http://api.themoviedb.org/3/movie/top_rated?api_key=";
-    public static final String MOVIEDB_BASE_MOVIE_URL = "http://api.themoviedb.org/movie/";
+    public static final String MOVIEDB_BASE_MOVIE_URL = "http://api.themoviedb.org/3/movie/";
     public static final String MOVIEDB_BASE_VIDEOS_URL = "/videos?api_key=";
     public static final String MOVIEDB_BASE_REVIEWS_URL = "/reviews?api_key=";
     public static final String APIKey = BuildConfig.API_KEY;
@@ -196,7 +196,7 @@ public class NetworkUtils {
         return null;
     }
 
-    public static Video[] getVideoData(String json){
+    public static Video[] getAllVideos(String json){
         try {
             JSONObject jsonObject = new JSONObject(json);
             JSONArray results = jsonObject.getJSONArray(JSON_RESULTS_KEY);
@@ -206,6 +206,8 @@ public class NetworkUtils {
             for(int i = 0; i < results.length(); i++){
                 videos[i] = getVideoFromJSON(results.getJSONObject(i));
             }
+
+            return videos;
 
         } catch (JSONException e){
             e.printStackTrace();
