@@ -2,9 +2,14 @@ package com.kirsch.lennard.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -23,6 +28,7 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.movie_Release_Date_Value) TextView movieReleaseDateValue;
     @BindView(R.id.movie_Plot_Synopsis) TextView moviePlotSynopsis;
     @BindView(R.id.ratingBar) RatingBar ratingBar;
+    @BindView(R.id.videos_scroll_view) GridView videosView;
 
     Context context;
 
@@ -62,7 +68,7 @@ public class DetailActivity extends AppCompatActivity {
      * @return the Data as a pretty printed String
      */
     private String restructureReleaseDate(String releaseDate){
-        String newDate = "";
+        String newDate = " ";
         String[] split = releaseDate.split("-");
         newDate += new DateFormatSymbols().getMonths()[Integer.parseInt(split[1]) - 1];
         newDate += " " + split[0];
@@ -85,7 +91,31 @@ public class DetailActivity extends AppCompatActivity {
                 Video[] videos = NetworkUtils.getAllVideos(results);
                 Log.d("TAG", videos[0].getKey());
                 Toast.makeText(context,"KEY: " + videos[0].getKey(), Toast.LENGTH_SHORT).show();
+                fillVideosView(videos);
             }
+        }
+    }
+
+    private void fillVideosView(final Video[] videos){
+        videosView.setAdapter(new VideoAdapter(this, videos));
+
+        videosView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                startVideoViewer(videos[i]);
+            }
+        });
+
+
+    }
+
+    private void startVideoViewer(Video video){
+        Uri uri = Uri.parse("https://www.youtube.com/watch?v=" + video.getKey());
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(uri);
+        if(intent.resolveActivity(getPackageManager()) != null){
+            startActivity(intent);
         }
     }
 }

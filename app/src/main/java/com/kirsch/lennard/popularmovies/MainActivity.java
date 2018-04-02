@@ -152,14 +152,14 @@ public class MainActivity extends AppCompatActivity {
 
     TODO #8 - When a user changes the sort criteria (most popular, highest rated, and favorites) the main view gets updated correctly.
 
-    TODO #9 - When a trailer is selected, app uses an Intent to launch the trailer.
+    COMPLETED #9 - When a trailer is selected, app uses an Intent to launch the trailer.
 
     TODO #10 - In the movies detail screen, a user can tap a button(for example, a star) to mark it as a Favorite.
 
 
     TODOs - NETWORK API IMPLEMENTATION
 
-    TODO #11 - App requests for related videos for a selected movie via the /movie/{id}/videos endpoint in a background thread and displays those details when the user selects a movie.
+    COMPLETED #11 - App requests for related videos for a selected movie via the /movie/{id}/videos endpoint in a background thread and displays those details when the user selects a movie.
 
     TODO #12 - App requests for user reviews for a selected movie via the /movie/{id}/reviews endpoint in a background thread and displays those details when the user selects a movie.
 
