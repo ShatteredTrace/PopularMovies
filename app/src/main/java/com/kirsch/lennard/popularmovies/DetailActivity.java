@@ -11,7 +11,9 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +30,7 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.movie_Release_Date_Value) TextView movieReleaseDateValue;
     @BindView(R.id.movie_Plot_Synopsis) TextView moviePlotSynopsis;
     @BindView(R.id.ratingBar) RatingBar ratingBar;
-    @BindView(R.id.videos_scroll_view) GridView videosView;
+    @BindView(R.id.videos_linear) LinearLayout videosLinear;
 
     Context context;
 
@@ -89,22 +91,25 @@ public class DetailActivity extends AppCompatActivity {
         public void onTaskComplete(String results) {
             if (results != null && !results.equals("")) {
                 Video[] videos = NetworkUtils.getAllVideos(results);
-                Log.d("TAG", videos[0].getKey());
-                Toast.makeText(context,"KEY: " + videos[0].getKey(), Toast.LENGTH_SHORT).show();
                 fillVideosView(videos);
             }
         }
     }
 
     private void fillVideosView(final Video[] videos){
-        videosView.setAdapter(new VideoAdapter(this, videos));
-
-        videosView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                startVideoViewer(videos[i]);
-            }
-        });
+        for (int i = 0; i < videos.length && i < 4; i++){
+            final int pos = i;
+            ImageView imageView = new ImageView(this);
+            imageView.setAdjustViewBounds(true);
+            Picasso.with(this).load(R.drawable.play_video).into(imageView);
+            videosLinear.addView(imageView);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startVideoViewer(videos[pos]);
+                }
+            });
+        }
 
 
     }
