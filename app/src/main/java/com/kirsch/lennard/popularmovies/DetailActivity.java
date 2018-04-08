@@ -12,6 +12,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.kirsch.lennard.popularmovies.MovieUtil.Movie;
+import com.kirsch.lennard.popularmovies.ReviewUtil.MovieDBQueryReviewsTask;
+import com.kirsch.lennard.popularmovies.ReviewUtil.Review;
 import com.kirsch.lennard.popularmovies.VideoUtil.MovieDBQueryVideosTask;
 import com.kirsch.lennard.popularmovies.VideoUtil.Video;
 import com.squareup.picasso.Picasso;
@@ -28,6 +30,7 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.movie_Plot_Synopsis) TextView moviePlotSynopsis;
     @BindView(R.id.ratingBar) RatingBar ratingBar;
     @BindView(R.id.videos_linear) LinearLayout videosLinear;
+    @BindView(R.id.reviews_linear) LinearLayout reviewsLinear;
 
     Context context;
 
@@ -58,7 +61,6 @@ public class DetailActivity extends AppCompatActivity {
         movieReleaseDateValue.setText(restructureReleaseDate(movie.getReleaseDate()));
         moviePlotSynopsis.setText(movie.getOverview());
         ratingBar.setRating(movie.getVoteAverage() / 2);
-
     }
 
     /**
@@ -77,6 +79,7 @@ public class DetailActivity extends AppCompatActivity {
     public void queryExtraData(Context context, Movie movie){
         if(NetworkUtils.isConnectedToInternet(this)){
             new MovieDBQueryVideosTask(this, movie.getId(), new MovieDBQueryVideosTaskListener()).execute();
+            new MovieDBQueryReviewsTask(this, movie.getId(), new MovieDBQueryReviewTaskListener()).execute();
         }
         else{
             //TODO What to do in case of no network connection
@@ -89,6 +92,16 @@ public class DetailActivity extends AppCompatActivity {
             if (results != null && !results.equals("")) {
                 Video[] videos = NetworkUtils.getAllVideos(results);
                 fillVideosView(videos);
+            }
+        }
+    }
+
+    public class  MovieDBQueryReviewTaskListener implements  AsyncTaskInterface<String>{
+        @Override
+        public void onTaskComplete(String results) {
+            if(results != null && !results.equals("")){
+                Review[] reviews = NetworkUtils.getAllReviews(results);
+                fillReviewsView(reviews);
             }
         }
     }
@@ -107,8 +120,14 @@ public class DetailActivity extends AppCompatActivity {
                 }
             });
         }
+    }
 
-
+    private void fillReviewsView(final Review[] reviews){
+        for (int i = 0; i < reviews.length && i < 5; i++) {
+            TextView contentView = new TextView(this);
+            contentView.setText(reviews[i].getContent());
+            reviewsLinear.addView(contentView);
+        }
     }
 
     private void startVideoViewer(Video video){
