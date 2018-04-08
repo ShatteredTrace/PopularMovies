@@ -1,4 +1,4 @@
-package com.kirsch.lennard.popularmovies;
+package com.kirsch.lennard.popularmovies.ReviewUtil;
 
 public class Review {
     private String id;

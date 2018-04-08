@@ -1,4 +1,4 @@
-package com.kirsch.lennard.popularmovies;
+package com.kirsch.lennard.popularmovies.MovieUtil;
 
 import android.content.Context;
 import android.view.View;
@@ -6,6 +6,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.kirsch.lennard.popularmovies.MovieUtil.Movie;
+import com.kirsch.lennard.popularmovies.NetworkUtils;
+import com.kirsch.lennard.popularmovies.R;
 import com.squareup.picasso.Picasso;
 
 public class MovieAdapter extends BaseAdapter{

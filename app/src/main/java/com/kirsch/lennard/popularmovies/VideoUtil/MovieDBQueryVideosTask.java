@@ -1,21 +1,24 @@
-package com.kirsch.lennard.popularmovies;
+package com.kirsch.lennard.popularmovies.VideoUtil;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.kirsch.lennard.popularmovies.AsyncTaskInterface;
+import com.kirsch.lennard.popularmovies.NetworkUtils;
+
 import java.io.IOException;
 import java.net.URL;
 
-public class MovieDBQueryTask extends AsyncTask<URL, Void, String> {
+public class MovieDBQueryVideosTask extends AsyncTask<URL, Void, String> {
     private AsyncTaskInterface<String> listener;
 
-    private boolean sortByPopularity = true;
     private Context context;
+    private int movieID;
 
-    public MovieDBQueryTask(Context context, Boolean sortByPopularity, AsyncTaskInterface<String> listener){
-        this.sortByPopularity = sortByPopularity;
+    public MovieDBQueryVideosTask(Context context, int movieID, AsyncTaskInterface<String> listener){
         this.context = context;
         this.listener = listener;
+        this.movieID = movieID;
     }
 
     @Override
@@ -23,7 +26,7 @@ public class MovieDBQueryTask extends AsyncTask<URL, Void, String> {
         String results = null;
 
         try{
-            results = NetworkUtils.getMovieDBData(NetworkUtils.buildUrl(sortByPopularity));
+            results = NetworkUtils.getMovieDBData(NetworkUtils.buildVideosUrl(movieID));
         } catch (IOException e){
             e.printStackTrace();
         }

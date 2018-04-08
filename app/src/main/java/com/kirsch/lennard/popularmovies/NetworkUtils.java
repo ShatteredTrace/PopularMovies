@@ -4,6 +4,9 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.kirsch.lennard.popularmovies.MovieUtil.Movie;
+import com.kirsch.lennard.popularmovies.VideoUtil.Video;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

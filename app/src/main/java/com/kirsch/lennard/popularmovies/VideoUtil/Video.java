@@ -1,4 +1,4 @@
-package com.kirsch.lennard.popularmovies;
+package com.kirsch.lennard.popularmovies.VideoUtil;
 
 public class Video {
     private String id;
