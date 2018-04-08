@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.kirsch.lennard.popularmovies.MovieUtil.Movie;
+import com.kirsch.lennard.popularmovies.ReviewUtil.Review;
 import com.kirsch.lennard.popularmovies.VideoUtil.Video;
 
 import org.json.JSONArray;
@@ -53,6 +54,11 @@ public class NetworkUtils {
     public static final String JSON_VIDEO_SITE_KEY = "site";
     public static final String JSON_VIDEO_SIZE_KEY = "size";
     public static final String JSON_VIDEO_TYPE_KEY = "type";
+
+    public static final String JSON_REVIEW_ID_KEY = "id";
+    public static final String JSON_REVIEW_AUTHOR_KEY = "author";
+    public static final String JSON_REVIEW_CONTENT_KEY = "content";
+    public static final String JSON_REVIEW_URL_KEY = "url";
 
     /**
      * This method created a Movie Object and fills it with Data from
@@ -108,6 +114,15 @@ public class NetworkUtils {
         String type = videoJSON.optString(JSON_VIDEO_TYPE_KEY);
 
         return new Video(id, iso_639_1, iso_3166_1, key, name, site, size, type);
+    }
+
+    public static final Review getReviewFromJSON(JSONObject reviewJSON){
+        String id = reviewJSON.optString(JSON_REVIEW_ID_KEY);
+        String author = reviewJSON.optString(JSON_REVIEW_AUTHOR_KEY);
+        String content= reviewJSON.optString(JSON_REVIEW_CONTENT_KEY);
+        String url = reviewJSON.optString(JSON_REVIEW_URL_KEY);
+
+        return new Review(id, author, content, url);
     }
 
     /**
@@ -219,14 +234,30 @@ public class NetworkUtils {
         return null;
     }
 
+    public static Review[] getAllReviews(String json){
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            JSONArray results = jsonObject.getJSONArray(JSON_RESULTS_KEY);
+
+            Review[] reviews = new Review[results.length()];
+
+            for (int i = 0; i < results.length(); i++){
+                reviews[i] = getReviewFromJSON(results.getJSONObject(i));
+            }
+
+            return reviews;
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static boolean isConnectedToInternet(Context context){
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
+        return activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
-
-        return isConnected;
     }
 
 
