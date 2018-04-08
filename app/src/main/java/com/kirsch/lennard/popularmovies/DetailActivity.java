@@ -124,9 +124,16 @@ public class DetailActivity extends AppCompatActivity {
 
     private void fillReviewsView(final Review[] reviews){
         for (int i = 0; i < reviews.length && i < 5; i++) {
+            String author = "Written by " + reviews[i].getAuthor();
+            TextView authorView = new TextView(this);
+            authorView.setText(author);
+            authorView.setPadding(20, 20, 0, 5);
+            reviewsLinear.addView(authorView);
             TextView contentView = new TextView(this);
             contentView.setText(reviews[i].getContent());
+            contentView.setPadding(0,20, 0, 60);
             reviewsLinear.addView(contentView);
+            //TODO!
         }
     }
 

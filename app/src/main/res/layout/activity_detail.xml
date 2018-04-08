@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:paddingEnd="1dp"
+            android:paddingEnd="20dp"
             app:layout_constraintTop_toBottomOf="@id/movie_Release_Date_Label"
             app:layout_constraintStart_toStartOf="@id/movie_Release_Date_Label"
             tools:text="PLOT SYNOPSIS" />
@@ -85,15 +85,26 @@
             app:layout_constraintTop_toBottomOf="@id/movie_Plot_Synopsis"
             app:layout_constraintStart_toStartOf="parent"/>
 
+        <TextView
+            android:id="@+id/reviews_Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingStart="20dp"
+            android:text="User Reviews"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintTop_toBottomOf="@id/videos_linear" />
+
         <LinearLayout
             android:id="@+id/reviews_linear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
-            android:paddingStart="12dp"
+            android:paddingStart="20dp"
             android:paddingEnd="12dp"
-            app:layout_constraintTop_toBottomOf="@id/videos_linear"
+
+            app:layout_constraintTop_toBottomOf="@id/reviews_Label"
             app:layout_constraintStart_toStartOf="parent"/>
     </android.support.constraint.ConstraintLayout>
 
