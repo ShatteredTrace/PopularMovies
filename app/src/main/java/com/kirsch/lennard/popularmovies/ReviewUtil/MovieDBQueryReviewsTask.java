@@ -4,7 +4,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.kirsch.lennard.popularmovies.AsyncTaskInterface;
+import com.kirsch.lennard.popularmovies.NetworkUtils;
 
+import java.io.IOException;
 import java.net.URL;
 
 public class MovieDBQueryReviewsTask extends AsyncTask<URL, Void, String> {
@@ -22,7 +24,12 @@ public class MovieDBQueryReviewsTask extends AsyncTask<URL, Void, String> {
     @Override
     protected String doInBackground(URL... urls) {
         String results = null;
-        //TODO!!
+
+        try {
+            results = NetworkUtils.getMovieDBData(NetworkUtils.buildReviewsUrl(movieID));
+        } catch (IOException e){
+            e.printStackTrace();
+        }
 
         return results;
     }
