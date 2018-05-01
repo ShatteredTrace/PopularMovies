@@ -157,8 +157,8 @@ public class MainActivity extends AppCompatActivity {
     TODOs - NETWORK API IMPLEMENTATION
 
     COMPLETED #11 - App requests for related videos for a selected movie via the /movie/{id}/videos endpoint in a background thread and displays those details when the user selects a movie.
-
-    TODO #12 - App requests for user reviews for a selected movie via the /movie/{id}/reviews endpoint in a background thread and displays those details when the user selects a movie.
+1
+    COMPLETED #120 - App requests for user reviews for a selected movie via the /movie/{id}/reviews endpoint in a background thread and displays those details when the user selects a movie.
 
     TODOs - DATA PERSISTENCE
 
