@@ -68,39 +68,73 @@ public class NetworkUtils {
      * @return A Movie Object filled with the retrieved Data
      */
     public static Movie getMovieFromJSON(String json, int index){
-            try {
-                JSONObject jsonObject = new JSONObject(json);
-                JSONArray results = jsonObject.getJSONArray(JSON_RESULTS_KEY);
-                JSONObject movieJSON = results.getJSONObject(index);
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            JSONArray results = jsonObject.getJSONArray(JSON_RESULTS_KEY);
+            JSONObject movieJSON = results.getJSONObject(index);
 
-                String poster_path = movieJSON.optString(JSON_POSTER_PATH_KEY);
-                boolean adult = movieJSON.optBoolean(JSON_ADULT_KEY);
-                String overview = movieJSON.optString(JSON_OVERVIEW_KEY);
-                String release_date = movieJSON.optString(JSON_RELEASE_DATE_KEY);
+            String poster_path = movieJSON.optString(JSON_POSTER_PATH_KEY);
+            boolean adult = movieJSON.optBoolean(JSON_ADULT_KEY);
+            String overview = movieJSON.optString(JSON_OVERVIEW_KEY);
+            String release_date = movieJSON.optString(JSON_RELEASE_DATE_KEY);
 
-                JSONArray genre_idsJSON = movieJSON.optJSONArray(JSON_GENRE_IDS_KEY);
-                int[] genre_ids = new int[genre_idsJSON.length()];
-                for (int i = 0; i < genre_idsJSON.length(); i++){
-                    genre_ids[i] = genre_idsJSON.getInt(i);
-                }
-
-                int id = movieJSON.optInt(JSON_ID_KEY);
-                String original_title = movieJSON.optString(JSON_ORIGINAL_TITLE_KEY);
-                String original_language = movieJSON.optString(JSON_ORIGINAL_LANGUAGE_KEY);
-                String title = movieJSON.optString(JSON_TITLE_KEY);
-                String backdrop_path = movieJSON.optString(JSON_BACKDROP_PATH_KEY);
-                int popularity = (int) movieJSON.optInt(JSON_POPULARITY_KEY);
-                int vote_count = movieJSON.optInt(JSON_VOTE_COUNT_KEY);
-                boolean video = movieJSON.optBoolean(JSON_VIDEO_KEY);
-                float vote_average = BigDecimal.valueOf(movieJSON.optDouble(JSON_VOTE_AVERAGE_KEY)).floatValue();
-
-                return new Movie(poster_path, adult, overview, release_date, genre_ids, id, original_title, original_language
-                , title, backdrop_path, popularity, vote_count, video, vote_average);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
+            JSONArray genre_idsJSON = movieJSON.optJSONArray(JSON_GENRE_IDS_KEY);
+            int[] genre_ids = new int[genre_idsJSON.length()];
+            for (int i = 0; i < genre_idsJSON.length(); i++){
+                genre_ids[i] = genre_idsJSON.getInt(i);
             }
-            return null;
+
+            int id = movieJSON.optInt(JSON_ID_KEY);
+            String original_title = movieJSON.optString(JSON_ORIGINAL_TITLE_KEY);
+            String original_language = movieJSON.optString(JSON_ORIGINAL_LANGUAGE_KEY);
+            String title = movieJSON.optString(JSON_TITLE_KEY);
+            String backdrop_path = movieJSON.optString(JSON_BACKDROP_PATH_KEY);
+            int popularity = (int) movieJSON.optInt(JSON_POPULARITY_KEY);
+            int vote_count = movieJSON.optInt(JSON_VOTE_COUNT_KEY);
+            boolean video = movieJSON.optBoolean(JSON_VIDEO_KEY);
+            float vote_average = BigDecimal.valueOf(movieJSON.optDouble(JSON_VOTE_AVERAGE_KEY)).floatValue();
+
+            return new Movie(poster_path, adult, overview, release_date, genre_ids, id, original_title, original_language
+                    , title, backdrop_path, popularity, vote_count, video, vote_average);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Movie getMovieDetailFromJSON(String json){
+        try {
+            JSONObject movieJSON = new JSONObject(json);
+
+            String poster_path = movieJSON.optString(JSON_POSTER_PATH_KEY);
+            boolean adult = movieJSON.optBoolean(JSON_ADULT_KEY);
+            String overview = movieJSON.optString(JSON_OVERVIEW_KEY);
+            String release_date = movieJSON.optString(JSON_RELEASE_DATE_KEY);
+
+            JSONArray genre_idsJSON = movieJSON.optJSONArray(JSON_GENRE_IDS_KEY);
+            int[] genre_ids = new int[genre_idsJSON.length()];
+            for (int i = 0; i < genre_idsJSON.length(); i++){
+                genre_ids[i] = genre_idsJSON.getInt(i);
+            }
+
+            int id = movieJSON.optInt(JSON_ID_KEY);
+            String original_title = movieJSON.optString(JSON_ORIGINAL_TITLE_KEY);
+            String original_language = movieJSON.optString(JSON_ORIGINAL_LANGUAGE_KEY);
+            String title = movieJSON.optString(JSON_TITLE_KEY);
+            String backdrop_path = movieJSON.optString(JSON_BACKDROP_PATH_KEY);
+            int popularity = (int) movieJSON.optInt(JSON_POPULARITY_KEY);
+            int vote_count = movieJSON.optInt(JSON_VOTE_COUNT_KEY);
+            boolean video = movieJSON.optBoolean(JSON_VIDEO_KEY);
+            float vote_average = BigDecimal.valueOf(movieJSON.optDouble(JSON_VOTE_AVERAGE_KEY)).floatValue();
+
+            return new Movie(poster_path, adult, overview, release_date, genre_ids, id, original_title, original_language
+                    , title, backdrop_path, popularity, vote_count, video, vote_average);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static Video getVideoFromJSON(JSONObject videoJSON){
@@ -250,6 +284,22 @@ public class NetworkUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static Movie getMovieFromID(int ID){
+        URL url = null;
+        String movieJSON = "";
+        try {
+            url = new URL(MOVIEDB_BASE_MOVIE_URL + ID + MOVIEDB_BASE_REVIEWS_URL + APIKey);
+        } catch (MalformedURLException e){
+            e.printStackTrace();
+        }
+        try {
+            movieJSON = getMovieDBData(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return getMovieDetailFromJSON(movieJSON);
     }
 
     public static boolean isConnectedToInternet(Context context){

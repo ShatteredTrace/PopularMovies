@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -22,6 +23,7 @@ import java.text.DateFormatSymbols;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.movie_Poster) ImageView moviePoster;
@@ -31,8 +33,10 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.ratingBar) RatingBar ratingBar;
     @BindView(R.id.videos_linear) LinearLayout videosLinear;
     @BindView(R.id.reviews_linear) LinearLayout reviewsLinear;
+    @BindView(R.id.favoriteButton) Button favoritesButton;
 
     Context context;
+    private boolean isFavorite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +148,12 @@ public class DetailActivity extends AppCompatActivity {
         intent.setData(uri);
         if(intent.resolveActivity(getPackageManager()) != null){
             startActivity(intent);
+        }
+    }
+    @OnClick(R.id.favoriteButton)
+    public void changeFavorite(Button button){
+        if(!isFavorite){
+            
         }
     }
 }

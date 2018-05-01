@@ -11,4 +11,9 @@
         android:orderInCategory="200"
         android:title="@string/sort_by_rating"/>
 
+    <item
+        android:id="@+id/settings_main_favorites"
+        android:orderInCategory="300"
+        android:title="@string/favorites"/>
+
 </menu>

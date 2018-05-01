@@ -1,6 +1,8 @@
 package com.kirsch.lennard.popularmovies;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,14 +11,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.kirsch.lennard.popularmovies.MovieUtil.Movie;
 import com.kirsch.lennard.popularmovies.MovieUtil.MovieAdapter;
+import com.kirsch.lennard.popularmovies.MovieUtil.MovieDBQueryFavoritesTask;
 import com.kirsch.lennard.popularmovies.MovieUtil.MovieDBQueryTask;
+import com.kirsch.lennard.popularmovies.data.FavoritesContract;
+import com.kirsch.lennard.popularmovies.data.FavoritesDbHelper;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     public static final String INTENT_MOVIE_OBJECT_KEY = "movieObject";
     private boolean sortByPopularity = true;
+    private SQLiteDatabase mdB;
+    FavoritesDbHelper dbHelper;
 
 
 
@@ -24,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setupDB();
 
         queryMovieDB();
     }
@@ -64,6 +75,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public class MovieDBQueryFavoritesTaskListener implements AsyncTaskInterface<Movie[]> {
+        @Override
+        public void onTaskComplete(Movie[] result) {
+            if(result != null){
+                fillGridView(result);
+            }
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -79,13 +99,19 @@ public class MainActivity extends AppCompatActivity {
             if (!sortByPopularity){
                 sortByPopularity = true;
                 queryMovieDB();
+            } else {
+                queryMovieDB();
             }
 
         } else if( id == R.id.settings_main_sort_vote){
             if(sortByPopularity){
                 sortByPopularity = false;
                 queryMovieDB();
+            } else {
+                queryMovieDB();
             }
+        } else if( id == R.id.settings_main_favorites){
+            queryFavorites();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -97,6 +123,39 @@ public class MainActivity extends AppCompatActivity {
         else{
             //TODO What to do in case of no network connection
         }
+    }
+
+    public void queryFavorites(){
+        Cursor cursor = getAllFavorites();
+        ArrayList<Integer> movieIDs = new ArrayList<>();
+        if(cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    int id = cursor.getInt(cursor.getColumnIndex(FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID));
+                    movieIDs.add(id);
+                } while (cursor.moveToNext());
+            }else {
+                Toast.makeText(this, "No Favorites saved", Toast.LENGTH_SHORT).show();
+            }
+            if (NetworkUtils.isConnectedToInternet(this)) {
+                new MovieDBQueryFavoritesTask(this, new MovieDBQueryFavoritesTaskListener(), movieIDs).execute();
+            }
+        }
+    }
+
+    public void setupDB(){
+        dbHelper = new FavoritesDbHelper(this);
+        mdB = dbHelper.getWritableDatabase();
+    }
+
+    private Cursor getAllFavorites(){
+        return mdB.query(FavoritesContract.FavoritesEntry.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                FavoritesContract.FavoritesEntry._ID);
     }
 }
 

@@ -3,4 +3,5 @@
     <string name="sort_by_popularity">Sort by Popularity</string>
     <string name="sort_by_rating">Sort by Rating</string>
     <string name="released_in">Released in </string>
+    <string name="favorites">Favorites</string>
 </resources>
