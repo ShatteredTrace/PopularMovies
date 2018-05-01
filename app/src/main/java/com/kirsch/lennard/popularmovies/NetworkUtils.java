@@ -26,6 +26,7 @@ public class NetworkUtils {
     public static final String MOVIEDB_BASE_MOVIE_URL = "http://api.themoviedb.org/3/movie/";
     public static final String MOVIEDB_BASE_VIDEOS_URL = "/videos?api_key=";
     public static final String MOVIEDB_BASE_REVIEWS_URL = "/reviews?api_key=";
+    public static final String MOVIEDB_BASE_DETAIL_URL = "?api_key=";
     public static final String APIKey = BuildConfig.API_KEY;
     public static final String MOVIEDB_POSTER_BASE_URL = "http://image.tmdb.org/t/p/";
     public static final String POSTER_SIZE_W185_URL = "w500/";
@@ -59,6 +60,8 @@ public class NetworkUtils {
     public static final String JSON_REVIEW_AUTHOR_KEY = "author";
     public static final String JSON_REVIEW_CONTENT_KEY = "content";
     public static final String JSON_REVIEW_URL_KEY = "url";
+
+    public static final String JSON_MOVIE_GENRES_KEY = "genres";
 
     /**
      * This method created a Movie Object and fills it with Data from
@@ -112,11 +115,9 @@ public class NetworkUtils {
             String overview = movieJSON.optString(JSON_OVERVIEW_KEY);
             String release_date = movieJSON.optString(JSON_RELEASE_DATE_KEY);
 
-            JSONArray genre_idsJSON = movieJSON.optJSONArray(JSON_GENRE_IDS_KEY);
-            int[] genre_ids = new int[genre_idsJSON.length()];
-            for (int i = 0; i < genre_idsJSON.length(); i++){
-                genre_ids[i] = genre_idsJSON.getInt(i);
-            }
+
+                int [] genre_ids = new int[0];
+
 
             int id = movieJSON.optInt(JSON_ID_KEY);
             String original_title = movieJSON.optString(JSON_ORIGINAL_TITLE_KEY);
@@ -126,7 +127,8 @@ public class NetworkUtils {
             int popularity = (int) movieJSON.optInt(JSON_POPULARITY_KEY);
             int vote_count = movieJSON.optInt(JSON_VOTE_COUNT_KEY);
             boolean video = movieJSON.optBoolean(JSON_VIDEO_KEY);
-            float vote_average = BigDecimal.valueOf(movieJSON.optDouble(JSON_VOTE_AVERAGE_KEY)).floatValue();
+
+            float vote_average = 0;//BigDecimal.valueOf(movieJSON.optDouble(JSON_VOTE_AVERAGE_KEY)).floatValue();
 
             return new Movie(poster_path, adult, overview, release_date, genre_ids, id, original_title, original_language
                     , title, backdrop_path, popularity, vote_count, video, vote_average);
@@ -290,7 +292,7 @@ public class NetworkUtils {
         URL url = null;
         String movieJSON = "";
         try {
-            url = new URL(MOVIEDB_BASE_MOVIE_URL + ID + MOVIEDB_BASE_REVIEWS_URL + APIKey);
+            url = new URL(MOVIEDB_BASE_MOVIE_URL + ID + MOVIEDB_BASE_DETAIL_URL + APIKey);
         } catch (MalformedURLException e){
             e.printStackTrace();
         }
@@ -309,6 +311,5 @@ public class NetworkUtils {
         return activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
     }
-
 
 }

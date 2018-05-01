@@ -1,7 +1,10 @@
 package com.kirsch.lennard.popularmovies;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +20,8 @@ import com.kirsch.lennard.popularmovies.ReviewUtil.MovieDBQueryReviewsTask;
 import com.kirsch.lennard.popularmovies.ReviewUtil.Review;
 import com.kirsch.lennard.popularmovies.VideoUtil.MovieDBQueryVideosTask;
 import com.kirsch.lennard.popularmovies.VideoUtil.Video;
+import com.kirsch.lennard.popularmovies.data.FavoritesContract;
+import com.kirsch.lennard.popularmovies.data.FavoritesDbHelper;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormatSymbols;
@@ -36,7 +41,10 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.favoriteButton) Button favoritesButton;
 
     Context context;
-    private boolean isFavorite;
+    private boolean isFavorite = false;
+    FavoritesDbHelper dbHelper;
+    private SQLiteDatabase mDB;
+    private Movie movie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +52,30 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
 
+
         context = this;
 
         Intent intent = getIntent();
-        Movie movie = intent.getExtras().getParcelable(MainActivity.INTENT_MOVIE_OBJECT_KEY);
+        movie = intent.getExtras().getParcelable(MainActivity.INTENT_MOVIE_OBJECT_KEY);
 
         queryExtraData(this, movie);
-
+        setupDB();
         setUpUI(movie);
+    }
+
+    public void setupDB(){
+        dbHelper = new FavoritesDbHelper(this);
+        mDB = dbHelper.getWritableDatabase();
+
+        Cursor cursor = null;
+        String sql = "SELECT " + FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID + " FROM "
+                + FavoritesContract.FavoritesEntry.TABLE_NAME + " WHERE " +
+                FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID + " = " +
+                movie.getId();
+        cursor = mDB.rawQuery(sql, null);
+        if(cursor.getCount() > 0) {
+            isFavorite = true;
+        }
     }
 
     /**
@@ -65,6 +89,12 @@ public class DetailActivity extends AppCompatActivity {
         movieReleaseDateValue.setText(restructureReleaseDate(movie.getReleaseDate()));
         moviePlotSynopsis.setText(movie.getOverview());
         ratingBar.setRating(movie.getVoteAverage() / 2);
+
+        if(isFavorite){
+            favoritesButton.setText("Unfavorite");
+        } else{
+            favoritesButton.setText("Favorite");
+        }
     }
 
     /**
@@ -153,7 +183,15 @@ public class DetailActivity extends AppCompatActivity {
     @OnClick(R.id.favoriteButton)
     public void changeFavorite(Button button){
         if(!isFavorite){
-            
+                ContentValues cv = new ContentValues();
+                cv.put(FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID, movie.getId());
+                mDB.insert(FavoritesContract.FavoritesEntry.TABLE_NAME, null, cv);
+                isFavorite = true;
+                button.setText("Unfavorite");
+        } else{
+            mDB.delete(FavoritesContract.FavoritesEntry.TABLE_NAME, FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID + "=" + movie.getId(), null);
+            isFavorite = false;
+            button.setText("Favorite");
         }
     }
 }
