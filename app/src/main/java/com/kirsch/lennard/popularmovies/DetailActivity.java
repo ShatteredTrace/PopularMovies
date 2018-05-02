@@ -185,6 +185,7 @@ public class DetailActivity extends AppCompatActivity {
         if(!isFavorite){
                 ContentValues cv = new ContentValues();
                 cv.put(FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID, movie.getId());
+                cv.put(FavoritesContract.FavoritesEntry.COLUMN_MOVIE_NAME, movie.getTitle());
                 mDB.insert(FavoritesContract.FavoritesEntry.TABLE_NAME, null, cv);
                 isFavorite = true;
                 button.setText("Unfavorite");

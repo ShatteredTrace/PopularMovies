@@ -202,15 +202,15 @@ public class MainActivity extends AppCompatActivity {
 //region Requirements STAGE 2
 /*  TODOs - USER INTERFACE - LAYOUT
 
-    TODO #7 - Movie Details layout contains a section for displaying trailer videos and user reviews.
+    COMPLETED #7 - Movie Details layout contains a section for displaying trailer videos and user reviews.
 
     TODOs - USER INTERFACE - FUNCTION
 
-    TODO #8 - When a user changes the sort criteria (most popular, highest rated, and favorites) the main view gets updated correctly.
+    COMPLETED #8 - When a user changes the sort criteria (most popular, highest rated, and favorites) the main view gets updated correctly.
 
     COMPLETED #9 - When a trailer is selected, app uses an Intent to launch the trailer.
 
-    TODO #10 - In the movies detail screen, a user can tap a button(for example, a star) to mark it as a Favorite.
+    COMPLETED #10 - In the movies detail screen, a user can tap a button(for example, a star) to mark it as a Favorite.
 
 
     TODOs - NETWORK API IMPLEMENTATION
@@ -221,9 +221,9 @@ public class MainActivity extends AppCompatActivity {
 
     TODOs - DATA PERSISTENCE
 
-    TODO #13 - The titles and IDs of the user’s favorite movies are stored in a native SQLite database and are exposed via a ContentProvider. This ContentProvider is updated whenever the user favorites or unfavorites a movie. No other persistence libraries are used.
+    COMPLETED #13 - The titles and IDs of the user’s favorite movies are stored in a native SQLite database and are exposed via a ContentProvider. This ContentProvider is updated whenever the user favorites or unfavorites a movie. No other persistence libraries are used.
 
-    TODO #14 - When the "favorites" setting option is selected, the main view displays the entire favorites collection based on movie ids stored in the ContentProvider.
+    COMPLETED #14 - When the "favorites" setting option is selected, the main view displays the entire favorites collection based on movie ids stored in the ContentProvider.
 
 
     SUGGESTIONS

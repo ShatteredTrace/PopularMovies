@@ -128,7 +128,7 @@ public class NetworkUtils {
             int vote_count = movieJSON.optInt(JSON_VOTE_COUNT_KEY);
             boolean video = movieJSON.optBoolean(JSON_VIDEO_KEY);
 
-            float vote_average = 0;//BigDecimal.valueOf(movieJSON.optDouble(JSON_VOTE_AVERAGE_KEY)).floatValue();
+            float vote_average = BigDecimal.valueOf(movieJSON.optDouble(JSON_VOTE_AVERAGE_KEY)).floatValue();
 
             return new Movie(poster_path, adult, overview, release_date, genre_ids, id, original_title, original_language
                     , title, backdrop_path, popularity, vote_count, video, vote_average);
