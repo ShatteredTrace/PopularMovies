@@ -14,5 +14,5 @@ It should be refined enough for the review, but further utility and better desig
 ## themovieDB
 
 This App uses the themovieDB API to retrieve Movie Data.
-To make this app functional please insert your API Key in NetworkUtils.java at line 18.
-You can request such a Key at https://www.themoviedb.org/
+To make this app functional please insert your API Key in gradle.properties like this:
+API_KEY="YOUR_API_KEY"
