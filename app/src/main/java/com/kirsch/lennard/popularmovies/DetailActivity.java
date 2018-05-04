@@ -91,9 +91,9 @@ public class DetailActivity extends AppCompatActivity {
         ratingBar.setRating(movie.getVoteAverage() / 2);
 
         if(isFavorite){
-            favoritesButton.setText("Unfavorite");
+            favoritesButton.setText(R.string.unfavorite);
         } else{
-            favoritesButton.setText("Favorite");
+            favoritesButton.setText(R.string.favorite);
         }
     }
 
@@ -158,7 +158,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private void fillReviewsView(final Review[] reviews){
         for (int i = 0; i < reviews.length && i < 5; i++) {
-            String author = "Written by " + reviews[i].getAuthor();
+            String author = getString(R.string.written_by) + " " + reviews[i].getAuthor();
             TextView authorView = new TextView(this);
             authorView.setText(author);
             authorView.setPadding(20, 20, 0, 5);

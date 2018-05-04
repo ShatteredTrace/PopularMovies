@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                     movieIDs.add(id);
                 } while (cursor.moveToNext());
             }else {
-                Toast.makeText(this, "No Favorites saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.no_favorites, Toast.LENGTH_SHORT).show();
             }
             if (NetworkUtils.isConnectedToInternet(this)) {
                 new MovieDBQueryFavoritesTask(this, new MovieDBQueryFavoritesTaskListener(), movieIDs).execute();
