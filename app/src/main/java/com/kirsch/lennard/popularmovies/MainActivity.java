@@ -3,6 +3,7 @@ package com.kirsch.lennard.popularmovies;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -27,16 +28,38 @@ public class MainActivity extends AppCompatActivity {
     private boolean sortByPopularity = true;
     private SQLiteDatabase mdB;
     FavoritesDbHelper dbHelper;
+    MainActivityStates currentState = MainActivityStates.POPULAR;
+    private final String CURRENTSTATEKEY = "currentStateKey";
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
+        if(savedInstanceState != null){
+            currentState = (MainActivityStates) savedInstanceState.getSerializable(CURRENTSTATEKEY);
+        }
+
         setContentView(R.layout.activity_main);
         setupDB();
+        switch (currentState){
+            case POPULAR: sortByPopularity = true;
+                queryMovieDB();
+                break;
+            case RATING: sortByPopularity = false;
+                queryMovieDB();
+                break;
+            case FAVORITES:
+                queryFavorites();
+                break;
+        }
+    }
 
-        queryMovieDB();
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(CURRENTSTATEKEY, currentState);
+        super.onSaveInstanceState(outState);
     }
 
     /**
@@ -102,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 queryMovieDB();
             }
+            currentState = MainActivityStates.POPULAR;
 
         } else if( id == R.id.settings_main_sort_vote){
             if(sortByPopularity){
@@ -110,8 +134,10 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 queryMovieDB();
             }
+            currentState = MainActivityStates.RATING;
         } else if( id == R.id.settings_main_favorites){
             queryFavorites();
+            currentState = MainActivityStates.FAVORITES;
         }
         return super.onOptionsItemSelected(item);
     }
