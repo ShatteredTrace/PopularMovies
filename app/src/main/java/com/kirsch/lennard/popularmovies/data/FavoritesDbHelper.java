@@ -13,6 +13,10 @@ public class FavoritesDbHelper extends SQLiteOpenHelper{
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /**
+     * This Method creates a Table containing the Movie ID and the Movie Title
+     * @param sqLiteDatabase The database in which to create a Table
+     */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         final String SQL_CREATE_FAVORITES_TABLE = "CREATE TABLE " +

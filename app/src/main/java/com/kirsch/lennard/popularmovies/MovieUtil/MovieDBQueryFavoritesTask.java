@@ -27,7 +27,6 @@ public class MovieDBQueryFavoritesTask extends AsyncTask<URL, Void, Movie[]> {
 
             for(int i = 0; i < movieIDs.size(); i++){
                 movies[i] = NetworkUtils.getMovieFromID(movieIDs.get(i));
-            //results = NetworkUtils.getMovieDBData(NetworkUtils.buildUrl(sortByPopularity));
         }
         return movies;
     }

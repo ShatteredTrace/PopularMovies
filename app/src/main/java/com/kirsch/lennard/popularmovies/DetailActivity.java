@@ -63,6 +63,9 @@ public class DetailActivity extends AppCompatActivity {
         setUpUI(movie);
     }
 
+    /**
+     * This method sets up the Database and checks whether the movie is already a favorite
+     */
     public void setupDB(){
         dbHelper = new FavoritesDbHelper(this);
         mDB = dbHelper.getWritableDatabase();
@@ -110,6 +113,11 @@ public class DetailActivity extends AppCompatActivity {
         return newDate;
     }
 
+    /**
+     * This method gets Trailers and Reviews from theMovieDB
+     * @param context the context in which this method was invoked
+     * @param movie the movie about which extra data will be queried
+     */
     public void queryExtraData(Context context, Movie movie){
         if(NetworkUtils.isConnectedToInternet(this)){
             new MovieDBQueryVideosTask(this, movie.getId(), new MovieDBQueryVideosTaskListener()).execute();
@@ -120,6 +128,9 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method waits for the MovieDBQueryVideoTask to end and computes the Result
+     */
     public class MovieDBQueryVideosTaskListener implements AsyncTaskInterface<String> {
         @Override
         public void onTaskComplete(String results) {
@@ -130,6 +141,9 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method waits for the MovieDBQueryReviewTask to end and computes the Result
+     */
     public class  MovieDBQueryReviewTaskListener implements  AsyncTaskInterface<String>{
         @Override
         public void onTaskComplete(String results) {
@@ -140,6 +154,10 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method shows the given Trailers as small icons and launches Youtube on click
+     * @param videos the video to show on the screen
+     */
     private void fillVideosView(final Video[] videos){
         for (int i = 0; i < videos.length && i < 4; i++){
             final int pos = i;
@@ -156,6 +174,10 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method displays the given Reviews on the screen
+     * @param reviews the Reviews which to display
+     */
     private void fillReviewsView(final Review[] reviews){
         for (int i = 0; i < reviews.length && i < 5; i++) {
             String author = getString(R.string.written_by) + " " + reviews[i].getAuthor();
@@ -171,6 +193,10 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method starts an intent with the youtube link of a trailer
+     * @param video the video to show to the user
+     */
     private void startVideoViewer(Video video){
         Uri uri = Uri.parse("https://www.youtube.com/watch?v=" + video.getKey());
 
@@ -180,6 +206,11 @@ public class DetailActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
+    /**
+     * This method handles the "Favorite" Button which adds a Movie to the Favorites List.
+     * It either adds a new Movie to the DB or removes it.
+     */
     @OnClick(R.id.favoriteButton)
     public void changeFavorite(Button button){
         if(!isFavorite){
@@ -188,11 +219,11 @@ public class DetailActivity extends AppCompatActivity {
                 cv.put(FavoritesContract.FavoritesEntry.COLUMN_MOVIE_NAME, movie.getTitle());
                 mDB.insert(FavoritesContract.FavoritesEntry.TABLE_NAME, null, cv);
                 isFavorite = true;
-                button.setText("Unfavorite");
+                button.setText(R.string.unfavorite);
         } else{
             mDB.delete(FavoritesContract.FavoritesEntry.TABLE_NAME, FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID + "=" + movie.getId(), null);
             isFavorite = false;
-            button.setText("Favorite");
+            button.setText(R.string.favorite);
         }
     }
 }

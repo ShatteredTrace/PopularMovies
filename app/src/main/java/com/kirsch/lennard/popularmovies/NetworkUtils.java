@@ -269,7 +269,7 @@ public class NetworkUtils {
 
         return null;
     }
-
+    
     public static Review[] getAllReviews(String json){
         try {
             JSONObject jsonObject = new JSONObject(json);
@@ -288,6 +288,11 @@ public class NetworkUtils {
         return null;
     }
 
+    /**
+     * This method queries a single Movie from theMovieDB and returns it as a new Movie Object
+     * @param ID the Movie ID of the movie to query
+     * @return The full Movie Object
+     */
     public static Movie getMovieFromID(int ID){
         URL url = null;
         String movieJSON = "";
@@ -304,6 +309,10 @@ public class NetworkUtils {
         return getMovieDetailFromJSON(movieJSON);
     }
 
+    /**
+     * This method checks if the device is connected to the internet and returns the result
+     * @return whether or not the device is connected to the internet
+     */
     public static boolean isConnectedToInternet(Context context){
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 

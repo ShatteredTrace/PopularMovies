@@ -88,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * This method waits for the MovieDBQueryTask to complete and computes the result
+     */
     public class MovieDBQueryTaskListener implements AsyncTaskInterface<String> {
         @Override
         public void onTaskComplete(String results) {
@@ -98,6 +101,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method waits for the MovieDBQueryFavoritesTask to complete and computes the result
+     */
     public class MovieDBQueryFavoritesTaskListener implements AsyncTaskInterface<Movie[]> {
         @Override
         public void onTaskComplete(Movie[] result) {
@@ -115,6 +121,10 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * This method changes the Gridview according to the selected options item
+     * @param item The menu item which was selected
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -142,6 +152,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * This method checks the phone for existing internet connection and starts a new MovieDBQueryTask
+     */
     public void queryMovieDB(){
         if(NetworkUtils.isConnectedToInternet(this)){
             new MovieDBQueryTask(this, sortByPopularity, new MovieDBQueryTaskListener()).execute();
@@ -151,6 +164,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method get the saved Favorites and queries their data from theMovieDB
+     */
     public void queryFavorites(){
         Cursor cursor = getAllFavorites();
         ArrayList<Integer> movieIDs = new ArrayList<>();
