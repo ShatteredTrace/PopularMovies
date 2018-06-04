@@ -263,9 +263,9 @@ public class MainActivity extends AppCompatActivity {
 
     TODOs - DATA PERSISTENCE
 
-    COMPLETED #13 - The titles and IDs of the user’s favorite movies are stored in a native SQLite database and are exposed via a ContentProvider. This ContentProvider is updated whenever the user favorites or unfavorites a movie. No other persistence libraries are used.
+    TODO #13 - The titles and IDs of the user’s favorite movies are stored in a native SQLite database and are exposed via a ContentProvider. This ContentProvider is updated whenever the user favorites or unfavorites a movie. No other persistence libraries are used.
 
-    COMPLETED #14 - When the "favorites" setting option is selected, the main view displays the entire favorites collection based on movie ids stored in the ContentProvider.
+    TODO #14 - When the "favorites" setting option is selected, the main view displays the entire favorites collection based on movie ids stored in the ContentProvider.
 
 
     SUGGESTIONS
