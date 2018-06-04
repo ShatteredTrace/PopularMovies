@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,6 +25,8 @@ import com.kirsch.lennard.popularmovies.data.FavoritesDbHelper;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     public static final String INTENT_MOVIE_OBJECT_KEY = "movieObject";
     private boolean sortByPopularity = true;
     private SQLiteDatabase mdB;
@@ -191,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Cursor getAllFavorites(){
+        /*
         return mdB.query(FavoritesContract.FavoritesEntry.TABLE_NAME,
                 null,
                 null,
@@ -198,6 +202,15 @@ public class MainActivity extends AppCompatActivity {
                 null,
                 null,
                 FavoritesContract.FavoritesEntry._ID);
+                */
+        try {
+            return getContentResolver().query(FavoritesContract.FavoritesEntry.CONTENT_URI,
+                    null, null, null, null);
+        } catch (Exception e){
+            Log.e(TAG, "Failes to load data.");
+            e.printStackTrace();
+            return null;
+        }
     }
 }
 

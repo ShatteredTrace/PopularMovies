@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -46,6 +47,8 @@ public class DetailActivity extends AppCompatActivity {
     private SQLiteDatabase mDB;
     private Movie movie;
 
+    private static final String TAG = DetailActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +70,24 @@ public class DetailActivity extends AppCompatActivity {
      * This method sets up the Database and checks whether the movie is already a favorite
      */
     public void setupDB(){
+        Cursor cursor = null;
+        String selection = FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID + "=?";
+        String[] args = new String[] {movie.getId() + ""};
+
+        try {
+            cursor = getContentResolver().query(FavoritesContract.FavoritesEntry.CONTENT_URI,
+                    null, selection, args, null);
+        } catch (Exception e){
+            Log.e(TAG, "Failes to load data.");
+            e.printStackTrace();
+        }
+
+        if(cursor.getCount() > 0){
+            isFavorite = true;
+        }
+
+
+/*
         dbHelper = new FavoritesDbHelper(this);
         mDB = dbHelper.getWritableDatabase();
 
@@ -79,6 +100,7 @@ public class DetailActivity extends AppCompatActivity {
         if(cursor.getCount() > 0) {
             isFavorite = true;
         }
+        */
     }
 
     /**
@@ -214,14 +236,25 @@ public class DetailActivity extends AppCompatActivity {
     @OnClick(R.id.favoriteButton)
     public void changeFavorite(Button button){
         if(!isFavorite){
-                ContentValues cv = new ContentValues();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID, movie.getId());
+            contentValues.put(FavoritesContract.FavoritesEntry.COLUMN_MOVIE_NAME, movie.getTitle());
+            Uri uri = getContentResolver().insert(FavoritesContract.FavoritesEntry.CONTENT_URI, contentValues);
+
+            isFavorite = true;
+            button.setText("Unfavorite");
+
+            /*    ContentValues cv = new ContentValues();
                 cv.put(FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID, movie.getId());
                 cv.put(FavoritesContract.FavoritesEntry.COLUMN_MOVIE_NAME, movie.getTitle());
                 mDB.insert(FavoritesContract.FavoritesEntry.TABLE_NAME, null, cv);
                 isFavorite = true;
                 button.setText(R.string.unfavorite);
+                */
         } else{
-            mDB.delete(FavoritesContract.FavoritesEntry.TABLE_NAME, FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID + "=" + movie.getId(), null);
+            getContentResolver().delete(FavoritesContract.FavoritesEntry.CONTENT_URI, FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID + "=" + movie.getId(), null);
+            //mDB.delete(FavoritesContract.FavoritesEntry.TABLE_NAME, FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID + "=" + movie.getId(), null);
+
             isFavorite = false;
             button.setText(R.string.favorite);
         }

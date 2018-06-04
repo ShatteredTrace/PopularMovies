@@ -1,11 +1,15 @@
 package com.kirsch.lennard.popularmovies.data;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 public class FavoritesContentProvider extends ContentProvider {
 
@@ -34,27 +38,86 @@ public class FavoritesContentProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] strings, String s, String[] strings1, String s1) {
+    public Cursor query(@NonNull Uri uri, String[] strings, String s, String[] strings1, String s1) {
+        final SQLiteDatabase db = mFavoritesDbHelper.getReadableDatabase();
+
+        int match = sUriMatcher.match(uri);
+        Cursor retCursor;
+
+        switch (match){
+            case FAVORITES:
+                retCursor = db.query(FavoritesContract.FavoritesEntry.TABLE_NAME,
+                        strings,
+                        s,
+                        strings1,
+                        null,
+                        null,
+                        s1);
+                break;
+
+                default:
+                    throw new UnsupportedOperationException("Unknown uri: + uri");
+        }
+
+        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
+
+        return retCursor;
+    }
+
+    @Override
+    public String getType(@NonNull Uri uri) {
         return null;
     }
 
     @Override
-    public String getType(Uri uri) {
-        return null;
+    public Uri insert(@NonNull Uri uri, ContentValues contentValues) {
+        final SQLiteDatabase db = mFavoritesDbHelper.getWritableDatabase();
+
+        int match = sUriMatcher.match(uri);
+        Uri returnUri;
+
+        switch (match){
+            case FAVORITES:
+                long id = db.insert(FavoritesContract.FavoritesEntry.TABLE_NAME, null, contentValues);
+                if( id > 0 ){
+                    returnUri = ContentUris.withAppendedId(FavoritesContract.FavoritesEntry.CONTENT_URI, id);
+                } else {
+                    throw new SQLException("Failed to insert a new row into " + uri);
+                }
+                break;
+
+                default:
+                    throw new UnsupportedOperationException("The Uri is unknown: " + uri);
+        }
+
+        getContext().getContentResolver().notifyChange(uri, null);
+        return returnUri;
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues contentValues) {
-        return null;
+    public int delete(@NonNull Uri uri, String s, String[] strings) {
+        final SQLiteDatabase db = mFavoritesDbHelper.getWritableDatabase();
+
+        int match = sUriMatcher.match(uri);
+        int tasksDeleted;
+
+        switch (match){
+            case FAVORITES_WITH_ID:
+                String id = uri.getPathSegments().get(1);
+                tasksDeleted = db.delete(FavoritesContract.FavoritesEntry.TABLE_NAME, "_id=?", new String[]{id});
+                break;
+                default:
+                    throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        if(tasksDeleted != 0){
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return tasksDeleted;
     }
 
     @Override
-    public int delete(Uri uri, String s, String[] strings) {
-        return 0;
-    }
-
-    @Override
-    public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
+    public int update(@NonNull Uri uri, ContentValues contentValues, String s, String[] strings) {
         return 0;
     }
 }
