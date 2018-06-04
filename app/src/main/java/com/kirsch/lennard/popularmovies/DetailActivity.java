@@ -62,14 +62,14 @@ public class DetailActivity extends AppCompatActivity {
         movie = intent.getExtras().getParcelable(MainActivity.INTENT_MOVIE_OBJECT_KEY);
 
         queryExtraData(this, movie);
-        setupDB();
+        checkFavorite();
         setUpUI(movie);
     }
 
     /**
-     * This method sets up the Database and checks whether the movie is already a favorite
+     * This method checks whether the movie is already a favorite
      */
-    public void setupDB(){
+    public void checkFavorite(){
         Cursor cursor = null;
         String selection = FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID + "=?";
         String[] args = new String[] {movie.getId() + ""};
@@ -85,22 +85,6 @@ public class DetailActivity extends AppCompatActivity {
         if(cursor.getCount() > 0){
             isFavorite = true;
         }
-
-
-/*
-        dbHelper = new FavoritesDbHelper(this);
-        mDB = dbHelper.getWritableDatabase();
-
-        Cursor cursor = null;
-        String sql = "SELECT " + FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID + " FROM "
-                + FavoritesContract.FavoritesEntry.TABLE_NAME + " WHERE " +
-                FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID + " = " +
-                movie.getId();
-        cursor = mDB.rawQuery(sql, null);
-        if(cursor.getCount() > 0) {
-            isFavorite = true;
-        }
-        */
     }
 
     /**
@@ -244,17 +228,8 @@ public class DetailActivity extends AppCompatActivity {
             isFavorite = true;
             button.setText("Unfavorite");
 
-            /*    ContentValues cv = new ContentValues();
-                cv.put(FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID, movie.getId());
-                cv.put(FavoritesContract.FavoritesEntry.COLUMN_MOVIE_NAME, movie.getTitle());
-                mDB.insert(FavoritesContract.FavoritesEntry.TABLE_NAME, null, cv);
-                isFavorite = true;
-                button.setText(R.string.unfavorite);
-                */
         } else{
             getContentResolver().delete(FavoritesContract.FavoritesEntry.CONTENT_URI, FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID + "=" + movie.getId(), null);
-            //mDB.delete(FavoritesContract.FavoritesEntry.TABLE_NAME, FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID + "=" + movie.getId(), null);
-
             isFavorite = false;
             button.setText(R.string.favorite);
         }

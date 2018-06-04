@@ -29,8 +29,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String INTENT_MOVIE_OBJECT_KEY = "movieObject";
     private boolean sortByPopularity = true;
-    private SQLiteDatabase mdB;
-    FavoritesDbHelper dbHelper;
     MainActivityStates currentState = MainActivityStates.POPULAR;
     private final String CURRENTSTATEKEY = "currentStateKey";
 
@@ -45,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_main);
-        setupDB();
         switch (currentState){
             case POPULAR: sortByPopularity = true;
                 queryMovieDB();
@@ -188,21 +185,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setupDB(){
-        dbHelper = new FavoritesDbHelper(this);
-        mdB = dbHelper.getWritableDatabase();
-    }
-
     private Cursor getAllFavorites(){
-        /*
-        return mdB.query(FavoritesContract.FavoritesEntry.TABLE_NAME,
-                null,
-                null,
-                null,
-                null,
-                null,
-                FavoritesContract.FavoritesEntry._ID);
-                */
         try {
             return getContentResolver().query(FavoritesContract.FavoritesEntry.CONTENT_URI,
                     null, null, null, null);
@@ -276,9 +259,9 @@ public class MainActivity extends AppCompatActivity {
 
     TODOs - DATA PERSISTENCE
 
-    TODO #13 - The titles and IDs of the user’s favorite movies are stored in a native SQLite database and are exposed via a ContentProvider. This ContentProvider is updated whenever the user favorites or unfavorites a movie. No other persistence libraries are used.
+    COMPLETED #13 - The titles and IDs of the user’s favorite movies are stored in a native SQLite database and are exposed via a ContentProvider. This ContentProvider is updated whenever the user favorites or unfavorites a movie. No other persistence libraries are used.
 
-    TODO #14 - When the "favorites" setting option is selected, the main view displays the entire favorites collection based on movie ids stored in the ContentProvider.
+    COMPLETED #14 - When the "favorites" setting option is selected, the main view displays the entire favorites collection based on movie ids stored in the ContentProvider.
 
 
     SUGGESTIONS
