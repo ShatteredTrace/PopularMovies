@@ -23,7 +23,7 @@ public class FavoritesContentProvider extends ContentProvider {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
         uriMatcher.addURI(FavoritesContract.AUTHORITY, FavoritesContract.PATH_FAVORITES, FAVORITES);
-        uriMatcher.addURI(FavoritesContract.AUTHORITY, FavoritesContract.PATH_FAVORITES, FAVORITES_WITH_ID);
+        uriMatcher.addURI(FavoritesContract.AUTHORITY, FavoritesContract.PATH_FAVORITES + "/#", FAVORITES_WITH_ID);
 
         return uriMatcher;
     }
@@ -104,7 +104,7 @@ public class FavoritesContentProvider extends ContentProvider {
         switch (match){
             case FAVORITES_WITH_ID:
                 String id = uri.getPathSegments().get(1);
-                tasksDeleted = db.delete(FavoritesContract.FavoritesEntry.TABLE_NAME, "_id=?", new String[]{id});
+                tasksDeleted = db.delete(FavoritesContract.FavoritesEntry.TABLE_NAME, s, null);
                 break;
                 default:
                     throw new UnsupportedOperationException("Unknown uri: " + uri);

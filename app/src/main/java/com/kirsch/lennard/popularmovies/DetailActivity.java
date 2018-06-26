@@ -21,6 +21,7 @@ import com.kirsch.lennard.popularmovies.ReviewUtil.MovieDBQueryReviewsTask;
 import com.kirsch.lennard.popularmovies.ReviewUtil.Review;
 import com.kirsch.lennard.popularmovies.VideoUtil.MovieDBQueryVideosTask;
 import com.kirsch.lennard.popularmovies.VideoUtil.Video;
+import com.kirsch.lennard.popularmovies.data.FavoritesContentProvider;
 import com.kirsch.lennard.popularmovies.data.FavoritesContract;
 import com.kirsch.lennard.popularmovies.data.FavoritesDbHelper;
 import com.squareup.picasso.Picasso;
@@ -229,7 +230,9 @@ public class DetailActivity extends AppCompatActivity {
             button.setText("Unfavorite");
 
         } else{
-            getContentResolver().delete(FavoritesContract.FavoritesEntry.CONTENT_URI, FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID + "=" + movie.getId(), null);
+            Uri uri = FavoritesContract.FavoritesEntry.CONTENT_URI;
+            uri = uri.buildUpon().appendPath(FavoritesContentProvider.FAVORITES_WITH_ID + "").build();
+            getContentResolver().delete(uri, FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID + "=" + movie.getId(), null);
             isFavorite = false;
             button.setText(R.string.favorite);
         }
