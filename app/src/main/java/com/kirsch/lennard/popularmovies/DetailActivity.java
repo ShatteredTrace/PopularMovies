@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kirsch.lennard.popularmovies.MovieUtil.Movie;
 import com.kirsch.lennard.popularmovies.ReviewUtil.MovieDBQueryReviewsTask;
@@ -131,7 +132,8 @@ public class DetailActivity extends AppCompatActivity {
             new MovieDBQueryReviewsTask(this, movie.getId(), new MovieDBQueryReviewTaskListener()).execute();
         }
         else{
-            //TODO What to do in case of no network connection
+            //COMPLETED What to do in case of no network connection
+            Toast.makeText(this, R.string.no_network_connection, Toast.LENGTH_SHORT).show();
         }
     }
 

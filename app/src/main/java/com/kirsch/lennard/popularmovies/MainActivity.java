@@ -160,7 +160,8 @@ public class MainActivity extends AppCompatActivity {
             new MovieDBQueryTask(this, sortByPopularity, new MovieDBQueryTaskListener()).execute();
         }
         else{
-            //TODO What to do in case of no network connection
+            //COMPLETED What to do in case of no network connection
+            Toast.makeText(this, R.string.no_network_connection, Toast.LENGTH_SHORT).show();
         }
     }
 
