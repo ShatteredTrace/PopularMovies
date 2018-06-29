@@ -57,6 +57,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        setContentView(R.layout.activity_main);
+        switch (currentState){
+            case POPULAR: sortByPopularity = true;
+                queryMovieDB();
+                break;
+            case RATING: sortByPopularity = false;
+                queryMovieDB();
+                break;
+            case FAVORITES:
+                queryFavorites();
+                break;
+        }
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putSerializable(CURRENTSTATEKEY, currentState);
         super.onSaveInstanceState(outState);
